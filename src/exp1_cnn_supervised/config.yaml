@@ -1,8 +1,11 @@
 experiment_name: exp1_cnn_supervised
 seed_base: 1234
 
-data_root: data/raw/Coventry2018
-single_dir: Sensor1_BigArea_Single
+data:
+  dataset_root: "data/raw/Coventry2018"
+  single_folder: "Sensor1_BigArea_Single"
+  anomaly_patterns: ["SwingLR", "SwingFB"]
+
 
 # Filenames that imply anomaly (1). Others are normal (0).
 anomaly_substrings: ["SwingLR", "SwingFB"]
