@@ -1,0 +1,46 @@
+seed: 42
+
+data:
+  # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  # IMPORTANT: Set this to your local dataset root (not included in repo)
+  # e.g., "/Users/you/.../data/raw/Coventry2018"
+  # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  dataset_root: "data/raw/Coventry2018"
+
+  # Folders relative to dataset_root
+  normal_folder: "Sensor1_BigArea_Single"
+  anomaly_folder: "Sensor1_BigArea_Double" # optional; set to "" if not available
+
+  # Sequence shape
+  T: 40
+  F: 64
+  C: 1
+
+  # Normal-only split for AE training
+  normal_train_ratio: 0.8
+  split_seed: 42
+
+train:
+  epochs: 50
+  batch_size: 10
+
+  # AE architecture + regularization
+  encoder_filters: [32, 32]
+  decoder_filters: [32, 32]
+  use_batchnorm: false
+
+  early_stopping:
+    enabled: true
+    monitor: "val_loss"
+    patience: 10
+  reduce_lr:
+    enabled: true
+    patience: 5
+    factor: 0.5
+
+threshold:
+  # tau = median + k * std on held-out normal validation errors
+  k_std: 3.0
+
+output:
+  dir: "output/exp2"
