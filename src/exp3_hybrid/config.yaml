@@ -1,0 +1,48 @@
+seed: 42
+
+data:
+  # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  # IMPORTANT: Set this to your local dataset root (not included in repo)
+  # e.g., "/Users/you/.../data/raw/Coventry2018"
+  # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  dataset_root: "data/raw/Coventry2018"
+
+  normal_folder: "Sensor1_BigArea_Single"
+  anomaly_folder: "Sensor1_BigArea_Double"
+
+  # Sequence shape
+  T: 40
+  F: 64
+  C: 1
+
+  # AE (normal-only) split
+  normal_train_ratio: 0.8
+  split_seed: 42
+
+ae:
+  epochs: 50
+  batch_size: 16
+  encoder_filters: [32, 16]
+  decoder_filters: [16, 32]
+  use_batchnorm: false
+
+kmeans:
+  n_clusters: 5
+  random_state: 0
+
+fnn:
+  epochs: 30
+  batch_size: 16
+  hidden_units: 64
+  dropout: 0.3
+  val_split: 0.2
+
+experiment:
+  anomaly_fractions: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
+  runs_per_fraction:
+    default: 10
+    overrides:
+      "0.5": 50
+
+output:
+  dir: "output/exp3"
