@@ -1,0 +1,43 @@
+experiment_name: exp1_cnn_supervised
+seed_base: 1234
+
+data_root: data/raw/Coventry2018
+single_dir: Sensor1_BigArea_Single
+
+# Filenames that imply anomaly (1). Others are normal (0).
+anomaly_substrings: ["SwingLR", "SwingFB"]
+
+input_shape: [40, 64, 1]
+
+# Fixed test split (no leakage)
+test_split:
+  normals_frac: 0.20
+  anomalies_frac: 0.30
+
+# Fractions of remaining anomalies used for TRAINING
+anomaly_fractions: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
+runs_default: 10
+runs_override:
+  "0.4": 20
+
+cv_folds: 5
+
+train:
+  batch_size: 32
+  epochs: 100
+  l2: 0.0005
+  dropout_dense: 0.5
+  dropout_conv: 0.3
+  optimizer: adam
+  lr: 0.001
+  early_stopping:
+    enabled: true
+    patience: 10
+    monitor: val_loss
+  reduce_lr:
+    enabled: true
+    patience: 5
+    factor: 0.5
+
+thresholding:
+  method: youden  # choose threshold via ROC (TPR - FPR)
